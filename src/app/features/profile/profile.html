@@ -1,0 +1,91 @@
+<div class="profile-container">
+  <div class="profile-card">
+    <h2 class="profile-title">Student Profile</h2>
+    <div class="student-info">
+      <div class="info-group">
+        <label class="info-label">Name:</label>
+        <span class="info-value">{{ studentName }}</span>
+      </div>
+      <div class="info-group">
+        <label class="info-label">Email:</label>
+        <span class="info-value">{{ studentEmail }}</span>
+      </div>
+    </div>
+    <form [formGroup]="profileForm" (ngSubmit)="onSubmit()" class="profile-form">
+      <div class="form-group">
+        <label for="phone" class="form-label">Phone Number</label>
+        <input
+          type="tel"
+          id="phone"
+          formControlName="phone"
+          class="form-input"
+          placeholder="Enter your 10-digit phone number"
+          [class.error]="isFieldInvalid('phone')"
+        />
+        <div class="error-message" *ngIf="isFieldInvalid('phone')">
+          Please enter a valid 10-digit phone number.
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="branch" class="form-label">Branch</label>
+        <input
+          type="text"
+          id="branch"
+          formControlName="branch"
+          class="form-input"
+          placeholder="e.g., Computer Science, Mechanical"
+          [class.error]="isFieldInvalid('branch')"
+        />
+        <div class="error-message" *ngIf="isFieldInvalid('branch')">Branch is required.</div>
+      </div>
+
+      <div class="form-group">
+        <label for="graduation_year" class="form-label">Graduation Year</label>
+        <input
+          type="text"
+          id="graduation_year"
+          formControlName="graduation_year"
+          class="form-input"
+          placeholder="e.g., 2026"
+          [class.error]="isFieldInvalid('graduation_year')"
+        />
+        <div class="error-message" *ngIf="isFieldInvalid('graduation_year')">
+          Please enter a valid 4-digit year.
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="skills" class="form-label">Skills</label>
+        <textarea
+          id="skills"
+          formControlName="skills"
+          class="form-textarea"
+          placeholder="List your skills (e.g., JavaScript, Python, React)"
+          rows="3"
+          [class.error]="isFieldInvalid('skills')"
+        ></textarea>
+        <div class="error-message" *ngIf="isFieldInvalid('skills')">Skills are required.</div>
+      </div>
+
+      <div class="form-group">
+        <label for="linkedin_url" class="form-label">LinkedIn URL</label>
+        <input
+          type="url"
+          id="linkedin_url"
+          formControlName="linkedin_url"
+          class="form-input"
+          placeholder="https://linkedin.com/in/yourprofile"
+          [class.error]="isFieldInvalid('linkedin_url')"
+        />
+        <div class="error-message" *ngIf="isFieldInvalid('linkedin_url')">
+          Please enter a valid LinkedIn URL.
+        </div>
+      </div>
+
+      <button type="submit" class="submit-btn" [disabled]="isLoading">
+        {{ isLoading ? 'Saving...' : 'Save Profile' }}
+      </button>
+    </form>
+  </div>
+</div>

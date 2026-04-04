@@ -1,0 +1,17 @@
+<div *ngIf="user$ | async as user" class="sidebar">
+  <h3>Menu</h3>
+
+  <!-- Admin -->
+  <div *ngIf="user?.role === 'admin'">
+    <a routerLink="/create-post">Create Post</a>
+  </div>
+
+  <!-- Student -->
+  <div *ngIf="user?.role === 'student'">
+    <a routerLink="/dashboard">Posts</a>
+    <a routerLink="/profile">My Profile</a>
+    <a routerLink="/resume">My Resume</a>
+  </div>
+
+  <button (click)="logout()">Logout</button>
+</div>

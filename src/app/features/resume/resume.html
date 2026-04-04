@@ -1,0 +1,155 @@
+<div class="resume-container">
+  <div class="resume-card">
+    <h2 class="resume-title">My Resume</h2>
+
+    <!-- Tab Navigation -->
+    <div class="tab-navigation">
+      <button
+        class="tab-btn"
+        [class.active]="activeTab === 'upload'"
+        (click)="setActiveTab('upload')"
+      >
+        Upload
+      </button>
+      <button
+        class="tab-btn"
+        [class.active]="activeTab === 'view'"
+        [disabled]="!resumeUrl"
+        (click)="setActiveTab('view')"
+      >
+        View Resume
+      </button>
+    </div>
+
+    <!-- Upload Tab Content -->
+    <div class="tab-content" *ngIf="activeTab === 'upload'">
+      <!-- Current Resume Status -->
+      <div class="resume-section" *ngIf="resumeUrl">
+        <h3 class="section-title">Current Resume</h3>
+        <div class="resume-status">
+          <div class="status-icon">
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+              <polyline points="14,2 14,8 20,8" />
+            </svg>
+          </div>
+          <div class="status-info">
+            <p class="status-text">Resume uploaded successfully</p>
+            <p class="status-hint">Switch to View tab to see your resume</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- No Resume Section -->
+      <div class="resume-section" *ngIf="!resumeUrl">
+        <div class="no-resume">
+          <div class="no-resume-icon">
+            <svg
+              width="64"
+              height="64"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1"
+            >
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+              <polyline points="14,2 14,8 20,8" />
+            </svg>
+          </div>
+          <h3 class="no-resume-title">No Resume Uploaded</h3>
+          <p class="no-resume-text">Upload your resume to get started with job matching.</p>
+        </div>
+      </div>
+
+      <!-- Upload Section -->
+      <div class="resume-section">
+        <h3 class="section-title">Upload New Resume</h3>
+        <div class="upload-area">
+          <input
+            type="file"
+            id="resume-upload"
+            accept=".pdf"
+            (change)="onFileSelected($event)"
+            style="display: none"
+          />
+          <label for="resume-upload" class="upload-btn" [class.uploading]="isUploading">
+            <div class="upload-content">
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                <polyline points="7,10 12,15 17,10" />
+                <line x1="12" y1="15" x2="12" y2="3" />
+              </svg>
+              <span *ngIf="!isUploading">{{ resumeUrl ? 'Replace Resume' : 'Upload Resume' }}</span>
+              <span *ngIf="isUploading">Uploading...</span>
+            </div>
+          </label>
+          <p class="upload-info">Supported formats: Only PDFs (Max 5MB)</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- View Tab Content -->
+    <div class="tab-content" *ngIf="activeTab === 'view'">
+      <div class="resume-section">
+        <h3 class="section-title">Resume Preview</h3>
+        <div class="pdf-viewer-container" *ngIf="safeResumeUrl">
+          <embed
+            [src]="safeResumeUrl"
+            type="application/pdf"
+            class="pdf-viewer"
+            title="Resume Preview"
+          />
+          <div class="viewer-actions">
+            <button class="view-btn" (click)="viewResume()">
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                <polyline points="15,3 21,3 21,9" />
+                <line x1="10" y1="14" x2="21" y2="3" />
+              </svg>
+              Open in New Tab
+            </button>
+          </div>
+        </div>
+        <div class="no-preview" *ngIf="!resumeUrl">
+          <div class="no-preview-icon">
+            <svg
+              width="48"
+              height="48"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1"
+            >
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+              <polyline points="14,2 14,8 20,8" />
+            </svg>
+          </div>
+          <h4 class="no-preview-title">No Resume Available</h4>
+          <p class="no-preview-text">Please upload a resume first to view it here.</p>
+          <button class="switch-tab-btn" (click)="setActiveTab('upload')">Upload Resume</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
