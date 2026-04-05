@@ -1,0 +1,65 @@
+<div class="register-container">
+  <div class="register-card">
+    <div class="register-header">
+      <h1>Register New Student</h1>
+      <p>Add a new student account to the platform</p>
+    </div>
+
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="register-form">
+      <!-- Email Field -->
+      <div class="form-group" [class.has-error]="isFieldInvalid('email')">
+        <label for="email">Email Address</label>
+        <input
+          type="email"
+          id="email"
+          formControlName="email"
+          placeholder="student@example.com"
+          [class.error]="isFieldInvalid('email')"
+        />
+        <small class="field-error" *ngIf="isFieldInvalid('email')">
+          {{ getEmailError() }}
+        </small>
+      </div>
+
+      <!-- Name Field -->
+      <div class="form-group" [class.has-error]="isFieldInvalid('name')">
+        <label for="name">Full Name</label>
+        <input
+          type="text"
+          id="name"
+          formControlName="name"
+          placeholder="John Doe"
+          [class.error]="isFieldInvalid('name')"
+        />
+        <small class="field-error" *ngIf="isFieldInvalid('name')">
+          {{ getNameError() }}
+        </small>
+      </div>
+
+      <!-- Submit Button -->
+      <button type="submit" class="register-btn" [disabled]="isLoading || registerForm.invalid">
+        <span *ngIf="!isLoading">Register Student</span>
+        <span *ngIf="isLoading">Registering...</span>
+      </button>
+    </form>
+
+    <!-- Registered Users List -->
+    <div class="registered-users" *ngIf="registeredUsers.length > 0">
+      <h2>Recently Registered</h2>
+      <table class="users-table">
+        <thead>
+          <tr>
+            <th>Email</th>
+            <th>Name</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let user of registeredUsers">
+            <td>{{ user.email }}</td>
+            <td>{{ user.name }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

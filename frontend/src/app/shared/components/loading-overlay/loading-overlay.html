@@ -1,0 +1,7 @@
+<div class="loading-overlay" *ngIf="isLoading" (click)="$event.stopPropagation()">
+  <div class="loading-backdrop"></div>
+  <div class="loading-content">
+    <div class="loading-spinner"></div>
+    <p class="loading-text">Loading...</p>
+  </div>
+</div>
