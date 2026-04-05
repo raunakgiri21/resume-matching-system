@@ -48,6 +48,18 @@ export class AuthService {
     });
   }
 
+  forgotPassword(email: string) {
+    return this.http.post(`${this.API}/auth/forgot-password`, { email });
+  }
+
+  resetPassword(token: string, password: string) {
+    return this.http.post(`${this.API}/auth/reset-password`, { token, password });
+  }
+
+  registerStudentUser(data: { email: string; name: string }) {
+    return this.http.post(`${this.API}/auth/admin/create-student`, data);
+  }
+
   logout() {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
