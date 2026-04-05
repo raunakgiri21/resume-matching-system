@@ -9,14 +9,14 @@ import { Role } from '../common/enums/role.enum';
 
 export class RegisterDto {
   @IsString()
-  name: string;
+  name!: string;
 
   @IsEmail()
-  email: string;
+  email!: string;
 
   @IsString()
   @MinLength(6)
-  password: string;
+  password!: string;
 
   @IsEnum(Role)
   @IsOptional()
@@ -25,8 +25,30 @@ export class RegisterDto {
 
 export class LoginDto {
   @IsEmail()
-  email: string;
+  email!: string;
 
   @IsString()
-  password: string;
+  password!: string;
+}
+
+export class ForgotPasswordDto {
+  @IsEmail()
+  email!: string;
+}
+
+export class ResetPasswordDto {
+  @IsString()
+  token!: string;
+
+  @IsString()
+  @MinLength(6)
+  password!: string;
+}
+
+export class AdminCreateStudentDto {
+  @IsString()
+  name!: string;
+
+  @IsEmail()
+  email!: string;
 }
