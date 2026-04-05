@@ -1,0 +1,99 @@
+<div class="dashboard-container">
+  <div class="dashboard-content">
+    <div class="post-features">
+      <div class="post-features__left">
+        <h2 class="post-features__title">Job Posts</h2>
+        <span class="post-features__count">{{ placements.length }} total</span>
+      </div>
+      <button class="post-features__create" *ngIf="isAdmin">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+          <path
+            d="M7 1v12M1 7h12"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"
+          />
+        </svg>
+        Create Post
+      </button>
+    </div>
+
+    <div class="table-wrap">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Sl.</th>
+            <th>Company</th>
+            <th>Job Title</th>
+            <th>Last Date</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="table__row" *ngFor="let placement of paginatedPlacements; let i = index">
+            <td class="table__sl">{{ (currentPage - 1) * itemsPerPage + i + 1 }}</td>
+            <td class="table__company">{{ placement.company_name }}</td>
+            <td>{{ placement.role_title }}</td>
+            <td>{{ placement.last_date }}</td>
+            <td>
+              <span
+                class="badge"
+                [ngClass]="{
+                  'badge--active': placement.status === 'active',
+                  'badge--closed': placement.status === 'closed',
+                  'badge--draft': placement.status === 'on-hold',
+                }"
+              >
+                {{ placement.status | titlecase }}
+              </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="pagination">
+        <span class="pagination__info">Page {{ currentPage }} of {{ totalPages }}</span>
+        <div class="pagination__controls">
+          <button
+            class="pagination__btn"
+            [disabled]="currentPage === 1"
+            (click)="goToPreviousPage()"
+          >
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+              <path
+                d="M9 11L5 7l4-4"
+                stroke="currentColor"
+                stroke-width="1.6"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </button>
+          <button
+            class="pagination__page"
+            *ngFor="let page of [1, 2, 3, 4, 5] | slice: 0 : totalPages"
+            [ngClass]="{ 'pagination__page--active': page === currentPage }"
+            (click)="goToPage(page)"
+          >
+            {{ page }}
+          </button>
+          <button
+            class="pagination__btn"
+            [disabled]="currentPage === totalPages"
+            (click)="goToNextPage()"
+          >
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+              <path
+                d="M5 3l4 4-4 4"
+                stroke="currentColor"
+                stroke-width="1.6"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

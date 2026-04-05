@@ -1,0 +1,390 @@
+// ─── Resume Container ───────────────────────────────────────────────────────
+.resume-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(145deg, var(--bg-deep) 0%, var(--bg-panel) 100%);
+  padding: 20px;
+}
+
+.resume-card {
+  background: var(--bg-card);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-glow);
+  width: 100%;
+  max-width: 600px;
+  padding: 32px;
+}
+
+.resume-title {
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--accent);
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+// ─── Tab Navigation ─────────────────────────────────────────────────────────
+.tab-navigation {
+  display: flex;
+  background: var(--bg-panel);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+  margin-bottom: 24px;
+  overflow: hidden;
+
+  .tab-btn {
+    flex: 1;
+    padding: 12px 24px;
+    background: none;
+    border: none;
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all var(--transition);
+    position: relative;
+
+    &:hover:not(:disabled) {
+      color: var(--text-primary);
+      background: rgba(99, 102, 241, 0.05);
+    }
+
+    &.active {
+      color: var(--accent);
+      background: var(--bg-card);
+      font-weight: 600;
+    }
+
+    &:disabled {
+      color: var(--text-muted);
+      cursor: not-allowed;
+    }
+
+    &:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 1px;
+      height: 60%;
+      background: var(--border);
+    }
+  }
+}
+
+// ─── Tab Content ────────────────────────────────────────────────────────────
+.tab-content {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// ─── Resume Sections ─────────────────────────────────────────────────────────
+.resume-section {
+  margin-bottom: 32px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  .section-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: 16px;
+  }
+}
+
+// ─── Resume Status ─────────────────────────────────────────────────────────
+.resume-status {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+  background: var(--bg-panel);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+
+  .status-icon {
+    color: var(--success);
+    flex-shrink: 0;
+  }
+
+  .status-info {
+    .status-text {
+      font-weight: 500;
+      color: var(--text-primary);
+      margin: 0 0 4px 0;
+    }
+
+    .status-hint {
+      font-size: 14px;
+      color: var(--text-secondary);
+      margin: 0;
+    }
+  }
+}
+
+// ─── PDF Viewer ─────────────────────────────────────────────────────────────
+.pdf-viewer-container {
+  .pdf-viewer {
+    width: 100%;
+    height: 600px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    background: white;
+  }
+
+  .viewer-actions {
+    margin-top: 16px;
+    text-align: center;
+
+    .view-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 20px;
+      background: var(--accent);
+      color: white;
+      border: none;
+      border-radius: var(--radius-md);
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all var(--transition);
+
+      &:hover {
+        background: var(--accent-hover);
+        transform: translateY(-1px);
+      }
+
+      svg {
+        width: 16px;
+        height: 16px;
+      }
+    }
+  }
+}
+
+// ─── No Preview State ───────────────────────────────────────────────────────
+.no-preview {
+  text-align: center;
+  padding: 60px 20px;
+  background: var(--bg-panel);
+  border-radius: var(--radius-md);
+  border: 2px dashed var(--border);
+
+  .no-preview-icon {
+    color: var(--text-muted);
+    margin-bottom: 16px;
+  }
+
+  .no-preview-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--accent);
+    margin: 0 0 8px 0;
+  }
+
+  .no-preview-text {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin: 0 0 20px 0;
+  }
+
+  .switch-tab-btn {
+    padding: 10px 20px;
+    background: var(--accent);
+    color: white;
+    border: none;
+    border-radius: var(--radius-md);
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all var(--transition);
+
+    &:hover {
+      background: var(--accent-hover);
+      transform: translateY(-1px);
+    }
+  }
+}
+
+// ─── Current Resume Preview ─────────────────────────────────────────────────
+.resume-preview {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 20px;
+  background: var(--bg-panel);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+
+  .resume-icon {
+    color: var(--accent);
+    flex-shrink: 0;
+  }
+
+  .resume-info {
+    flex: 1;
+
+    .resume-filename {
+      font-weight: 600;
+      color: var(--text-primary);
+      margin: 0 0 4px 0;
+    }
+
+    .resume-status {
+      font-size: 14px;
+      color: var(--text-secondary);
+      margin: 0;
+    }
+  }
+
+  .view-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    background: var(--accent);
+    color: white;
+    border: none;
+    border-radius: var(--radius-md);
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all var(--transition);
+
+    &:hover {
+      background: var(--accent-hover);
+      transform: translateY(-1px);
+    }
+
+    svg {
+      width: 16px;
+      height: 16px;
+    }
+  }
+}
+
+// ─── No Resume State ────────────────────────────────────────────────────────
+.no-resume {
+  text-align: center;
+  padding: 40px 20px;
+  background: var(--bg-panel);
+  border-radius: var(--radius-md);
+  border: 2px dashed var(--border);
+
+  .no-resume-icon {
+    color: var(--text-muted);
+    margin-bottom: 16px;
+  }
+
+  .no-resume-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--accent);
+    margin: 0 0 8px 0;
+  }
+
+  .no-resume-text {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin: 0;
+  }
+}
+
+// ─── Upload Area ────────────────────────────────────────────────────────────
+.upload-area {
+  .upload-btn {
+    display: block;
+    width: 100%;
+    padding: 24px;
+    border: 2px dashed var(--border);
+    border-radius: var(--radius-md);
+    background: var(--bg-panel);
+    cursor: pointer;
+    transition: all var(--transition);
+    text-align: center;
+
+    &:hover:not(.uploading) {
+      border-color: var(--accent);
+      background: rgba(99, 102, 241, 0.05);
+    }
+
+    &.uploading {
+      border-color: var(--text-muted);
+      background: var(--bg-panel);
+      cursor: not-allowed;
+    }
+
+    .upload-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      color: var(--text-secondary);
+
+      svg {
+        width: 32px;
+        height: 32px;
+      }
+
+      span {
+        font-size: 16px;
+        font-weight: 500;
+      }
+    }
+  }
+
+  .upload-info {
+    font-size: 12px;
+    color: var(--text-muted);
+    text-align: center;
+    margin: 8px 0 0 0;
+  }
+}
+
+// ─── Responsive Design ──────────────────────────────────────────────────────
+@media (max-width: 640px) {
+  .resume-container {
+    padding: 16px;
+  }
+
+  .resume-card {
+    padding: 24px;
+  }
+
+  .resume-title {
+    font-size: 24px;
+  }
+
+  .resume-preview {
+    flex-direction: column;
+    text-align: center;
+    gap: 12px;
+
+    .view-btn {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+
+  .upload-area .upload-btn {
+    padding: 20px;
+  }
+}

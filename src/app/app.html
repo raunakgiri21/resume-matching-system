@@ -1,0 +1,11 @@
+<div class="layout">
+  @if (user$) {
+    <app-sidebar></app-sidebar>
+  }
+
+  <div class="content">
+    <router-outlet></router-outlet>
+    <app-toast-container />
+    <app-loading-overlay />
+  </div>
+</div>

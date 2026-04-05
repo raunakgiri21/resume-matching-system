@@ -1,0 +1,112 @@
+<div class="login-container">
+  <div class="login-card">
+    <div class="login-header">
+      <h1>Resume Matcher</h1>
+      <p>AI-Powered Resume Analysis System</p>
+    </div>
+
+    <!-- Login Form -->
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+      <!-- Email field -->
+      <div class="form-group" [class.has-error]="isFieldInvalid('email')">
+        <label for="email">Email Address</label>
+        <input
+          id="email"
+          type="email"
+          formControlName="email"
+          placeholder="Enter your email"
+          autocomplete="email"
+          [class.error]="isFieldInvalid('email')"
+        />
+        <span class="field-error" *ngIf="isFieldInvalid('email')">
+          <ng-container *ngIf="loginForm.get('email')?.errors?.['required']"
+            >Email is required.</ng-container
+          >
+          <ng-container *ngIf="loginForm.get('email')?.errors?.['email']"
+            >Enter a valid email address.</ng-container
+          >
+        </span>
+      </div>
+
+      <!-- Password field -->
+      <div class="form-group" [class.has-error]="isFieldInvalid('password')">
+        <label for="password">Password</label>
+        <div class="password-input">
+          <input
+            id="password"
+            [type]="showPassword ? 'text' : 'password'"
+            formControlName="password"
+            placeholder="Enter your password"
+            autocomplete="current-password"
+            [class.error]="isFieldInvalid('password')"
+          />
+          <button
+            type="button"
+            class="password-toggle"
+            (click)="togglePasswordVisibility()"
+            [attr.aria-label]="showPassword ? 'Hide password' : 'Show password'"
+          >
+            <svg
+              *ngIf="!showPassword"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+              <circle cx="12" cy="12" r="3" />
+            </svg>
+            <svg
+              *ngIf="showPassword"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path
+                d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"
+              />
+              <path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19" />
+              <line x1="1" y1="1" x2="23" y2="23" />
+            </svg>
+          </button>
+        </div>
+        <span class="field-error" *ngIf="isFieldInvalid('password')">
+          <ng-container *ngIf="loginForm.get('password')?.errors?.['required']"
+            >Password is required.</ng-container
+          >
+          <ng-container *ngIf="loginForm.get('password')?.errors?.['minlength']"
+            >Password must be at least 8 characters.</ng-container
+          >
+        </span>
+      </div>
+
+      <!-- Remember me -->
+      <div class="form-options">
+        <label class="checkbox-container">
+          <input type="checkbox" formControlName="rememberMe" />
+          <span class="checkmark"></span>
+          Remember me
+        </label>
+        <a routerLink="/forget-password" class="forgot-password-link">Forgot Password?</a>
+      </div>
+
+      <!-- Submit Button -->
+      <button type="submit" class="login-btn" [class.loading]="isLoading" [disabled]="isLoading">
+        <span *ngIf="!isLoading">Sign In</span>
+        <span *ngIf="isLoading" class="loading-text">
+          <span class="spinner"></span>
+          Signing in...
+        </span>
+      </button>
+    </form>
+
+    <div class="login-footer">
+      <p>Secure access to AI-powered resume analysis</p>
+    </div>
+  </div>
+</div>
