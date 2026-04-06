@@ -59,7 +59,7 @@ export class Profile implements OnInit {
       branch: ['', Validators.required],
       graduation_year: ['', [Validators.required, Validators.pattern(/^\d{4}$/)]],
       skills: ['', Validators.required],
-      linkedin_url: ['', [Validators.pattern(/^https?:\/\/(www\.)?linkedin\.com\/.*$/)]],
+      linkedin_url: ['', [Validators.required, Validators.pattern(/^https?:\/\/(www\.)?linkedin\.com\/.*$/)]],
     });
   }
 
