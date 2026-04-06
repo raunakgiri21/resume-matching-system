@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://api.yourdomain.com',
+  apiUrl: 'https://resume-matching-system-khji.onrender.com/api',
 };
