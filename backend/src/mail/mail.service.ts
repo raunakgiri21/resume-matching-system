@@ -7,6 +7,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import * as nodemailer from 'nodemailer';
 import type { SendMailOptions, Transporter } from 'nodemailer';
+import { Resend } from 'resend';
 
 @Injectable()
 export class MailService {
@@ -39,14 +40,22 @@ export class MailService {
   }
 
   async sendMail(options: SendMailOptions) {
-    const mailOptions = { from: this.from, ...options };
-    if (!this.transporter) {
-      this.logger.log('EMAIL DUMP', JSON.stringify(mailOptions, null, 2));
-      return {
-        message: 'Email logged in console because SMTP is not configured.',
-      };
-    }
+    // const mailOptions = { from: this.from, ...options };
+    // if (!this.transporter) {
+    //   this.logger.log('EMAIL DUMP', JSON.stringify(mailOptions, null, 2));
+    //   return {
+    //     message: 'Email logged in console because SMTP is not configured.',
+    //   };
+    // }
+    // return await this.transporter.sendMail(mailOptions);
 
-    return await this.transporter.sendMail(mailOptions);
+    const resend = new Resend(this.config.get<string>('RESEND_API_KEY') || '');
+
+    return await resend.emails.send({
+      from: this.from,
+      to: options.to as string,
+      subject: options.subject,
+      html: options.html,
+    });
   }
 }
