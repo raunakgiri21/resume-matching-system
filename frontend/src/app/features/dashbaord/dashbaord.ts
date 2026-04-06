@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Observable } from 'rxjs';
+import { Router } from '@angular/router';
+import { Observable, firstValueFrom } from 'rxjs';
 import { AuthService } from '../../core/services/auth/auth';
+import { Placements } from '../../core/services/placements/placements';
+import { LoadingService } from '../../core/services/loading/loading';
 
 interface Placement {
   id: string;
@@ -14,7 +17,7 @@ interface Placement {
   required_skills: string[];
   eligibility_criteria: string;
   last_date: string;
-  status: 'active' | 'closed' | 'on-hold';
+  status: 'open' | 'closed' | 'on-hold';
   created_at: string;
   updated_at: string;
 }
@@ -29,7 +32,12 @@ export class Dashbaord implements OnInit {
   user$: Observable<any>;
   isAdmin = false;
 
-  constructor(private authService: AuthService) {
+  constructor(
+    private authService: AuthService,
+    public router: Router,
+    private placementsService: Placements,
+    private loadingService: LoadingService,
+  ) {
     this.user$ = this.authService.user$;
   }
 
@@ -37,7 +45,22 @@ export class Dashbaord implements OnInit {
     this.user$.subscribe((user: any) => {
       this.isAdmin = user?.role === 'admin';
     });
+    this.loadPlacements();
   }
+
+  private async loadPlacements(): Promise<void> {
+    try {
+      this.loadingService.show();
+      const response: any = await firstValueFrom(this.placementsService.getPlacements());
+      this.placements = response || [];
+      console.log('Loaded placements:', this.placements);
+    } catch (error) {
+      console.error('Error loading placements:', error);
+    } finally {
+      this.loadingService.hide();
+    }
+  }
+
   placements: Placement[] = [
     {
       id: 'P001',
@@ -50,7 +73,7 @@ export class Dashbaord implements OnInit {
       required_skills: ['Python', 'JavaScript', 'System Design'],
       eligibility_criteria: 'B.Tech CS/IT with 7+ CGPA',
       last_date: '2026-05-15',
-      status: 'active',
+      status: 'open',
       created_at: '2026-03-01',
       updated_at: '2026-03-20',
     },
@@ -65,7 +88,7 @@ export class Dashbaord implements OnInit {
       required_skills: ['C++', 'Azure', 'Cloud Computing'],
       eligibility_criteria: 'B.Tech/M.Tech with 6.5+ CGPA',
       last_date: '2026-05-10',
-      status: 'active',
+      status: 'open',
       created_at: '2026-03-02',
       updated_at: '2026-03-19',
     },
@@ -80,7 +103,7 @@ export class Dashbaord implements OnInit {
       required_skills: ['Java', 'AWS', 'Database Design'],
       eligibility_criteria: 'B.Tech CS/IT with 7+ CGPA',
       last_date: '2026-05-20',
-      status: 'active',
+      status: 'open',
       created_at: '2026-03-03',
       updated_at: '2026-03-18',
     },
@@ -95,7 +118,7 @@ export class Dashbaord implements OnInit {
       required_skills: ['Java', 'C', 'Testing'],
       eligibility_criteria: 'B.Tech/B.Sc with 6+ CGPA',
       last_date: '2026-04-30',
-      status: 'active',
+      status: 'open',
       created_at: '2026-03-04',
       updated_at: '2026-03-17',
     },
@@ -110,7 +133,7 @@ export class Dashbaord implements OnInit {
       required_skills: ['Linux', 'Networking', 'Troubleshooting'],
       eligibility_criteria: 'B.Tech/B.Sc with 5.5+ CGPA',
       last_date: '2026-04-25',
-      status: 'active',
+      status: 'open',
       created_at: '2026-03-05',
       updated_at: '2026-03-16',
     },
@@ -125,7 +148,7 @@ export class Dashbaord implements OnInit {
       required_skills: ['React', 'JavaScript', 'System Design'],
       eligibility_criteria: 'B.Tech/M.Tech with 7.5+ CGPA',
       last_date: '2026-05-25',
-      status: 'active',
+      status: 'open',
       created_at: '2026-03-06',
       updated_at: '2026-03-15',
     },
@@ -140,7 +163,7 @@ export class Dashbaord implements OnInit {
       required_skills: ['Java', '.NET', 'SQL'],
       eligibility_criteria: 'B.Tech/B.Sc with 6+ CGPA',
       last_date: '2026-04-20',
-      status: 'active',
+      status: 'open',
       created_at: '2026-03-07',
       updated_at: '2026-03-14',
     },
@@ -155,7 +178,7 @@ export class Dashbaord implements OnInit {
       required_skills: ['Swift', 'Objective-C', 'iOS Development'],
       eligibility_criteria: 'B.Tech/M.Tech with 7+ CGPA',
       last_date: '2026-05-30',
-      status: 'active',
+      status: 'open',
       created_at: '2026-03-08',
       updated_at: '2026-03-13',
     },
@@ -170,7 +193,7 @@ export class Dashbaord implements OnInit {
       required_skills: ['Java', 'Spring Boot', 'REST APIs'],
       eligibility_criteria: 'B.Tech/B.Sc with 5.5+ CGPA',
       last_date: '2026-04-15',
-      status: 'active',
+      status: 'open',
       created_at: '2026-03-09',
       updated_at: '2026-03-12',
     },
@@ -185,7 +208,7 @@ export class Dashbaord implements OnInit {
       required_skills: ['JavaScript', 'Node.js', 'React'],
       eligibility_criteria: 'B.Tech/M.Tech with 7+ CGPA',
       last_date: '2026-06-05',
-      status: 'active',
+      status: 'open',
       created_at: '2026-03-10',
       updated_at: '2026-03-11',
     },
@@ -200,7 +223,7 @@ export class Dashbaord implements OnInit {
       required_skills: ['C', 'Java', 'Problem Solving'],
       eligibility_criteria: 'B.Tech/B.Sc with 5+ CGPA',
       last_date: '2026-04-10',
-      status: 'active',
+      status: 'open',
       created_at: '2026-03-11',
       updated_at: '2026-03-10',
     },
@@ -215,7 +238,7 @@ export class Dashbaord implements OnInit {
       required_skills: ['Java', 'Scala', 'Distributed Systems'],
       eligibility_criteria: 'B.Tech/M.Tech with 7+ CGPA',
       last_date: '2026-06-01',
-      status: 'active',
+      status: 'open',
       created_at: '2026-03-12',
       updated_at: '2026-03-09',
     },
@@ -230,7 +253,7 @@ export class Dashbaord implements OnInit {
       required_skills: ['C++', 'Python', 'Debugging'],
       eligibility_criteria: 'B.Tech/B.Sc with 5.5+ CGPA',
       last_date: '2026-04-05',
-      status: 'on-hold',
+      status: 'open',
       created_at: '2026-03-13',
       updated_at: '2026-03-08',
     },
@@ -245,7 +268,7 @@ export class Dashbaord implements OnInit {
       required_skills: ['Python', 'Go', 'Microservices'],
       eligibility_criteria: 'B.Tech/M.Tech with 7+ CGPA',
       last_date: '2026-05-28',
-      status: 'active',
+      status: 'open',
       created_at: '2026-03-14',
       updated_at: '2026-03-07',
     },
@@ -260,7 +283,7 @@ export class Dashbaord implements OnInit {
       required_skills: ['Java', 'SQL', 'Web Development'],
       eligibility_criteria: 'B.Tech/B.Sc with 6+ CGPA',
       last_date: '2026-04-18',
-      status: 'active',
+      status: 'open',
       created_at: '2026-03-15',
       updated_at: '2026-03-06',
     },
@@ -275,7 +298,7 @@ export class Dashbaord implements OnInit {
       required_skills: ['Python', 'JavaScript', 'APIs'],
       eligibility_criteria: 'B.Tech/M.Tech with 7+ CGPA',
       last_date: '2026-06-10',
-      status: 'active',
+      status: 'open',
       created_at: '2026-03-16',
       updated_at: '2026-03-05',
     },
@@ -290,7 +313,7 @@ export class Dashbaord implements OnInit {
       required_skills: ['Linux', 'Shell Scripting', 'Monitoring'],
       eligibility_criteria: 'B.Tech/B.Sc with 5.5+ CGPA',
       last_date: '2026-04-12',
-      status: 'active',
+      status: 'open',
       created_at: '2026-03-17',
       updated_at: '2026-03-04',
     },
@@ -305,7 +328,7 @@ export class Dashbaord implements OnInit {
       required_skills: ['Java', 'Scala', 'Data Processing'],
       eligibility_criteria: 'B.Tech/M.Tech with 7+ CGPA',
       last_date: '2026-05-22',
-      status: 'active',
+      status: 'open',
       created_at: '2026-03-18',
       updated_at: '2026-03-03',
     },
@@ -320,7 +343,7 @@ export class Dashbaord implements OnInit {
       required_skills: ['Java', 'Python', 'Blockchain'],
       eligibility_criteria: 'B.Tech/M.Tech with 6+ CGPA',
       last_date: '2026-04-22',
-      status: 'active',
+      status: 'open',
       created_at: '2026-03-19',
       updated_at: '2026-03-02',
     },
@@ -335,7 +358,7 @@ export class Dashbaord implements OnInit {
       required_skills: ['Java', 'JavaScript', 'Security'],
       eligibility_criteria: 'B.Tech/M.Tech with 7+ CGPA',
       last_date: '2026-05-18',
-      status: 'active',
+      status: 'open',
       created_at: '2026-03-20',
       updated_at: '2026-03-01',
     },
@@ -350,7 +373,7 @@ export class Dashbaord implements OnInit {
       required_skills: ['React', 'Node.js', 'MongoDB'],
       eligibility_criteria: 'B.Tech/B.Sc with 6+ CGPA',
       last_date: '2026-04-28',
-      status: 'active',
+      status: 'open',
       created_at: '2026-02-01',
       updated_at: '2026-02-28',
     },
@@ -365,7 +388,7 @@ export class Dashbaord implements OnInit {
       required_skills: ['Python', 'JavaScript', 'React'],
       eligibility_criteria: 'B.Tech/M.Tech with 7+ CGPA',
       last_date: '2026-06-08',
-      status: 'active',
+      status: 'open',
       created_at: '2026-02-02',
       updated_at: '2026-02-27',
     },
@@ -380,7 +403,7 @@ export class Dashbaord implements OnInit {
       required_skills: ['Java', 'SQL', 'Agile'],
       eligibility_criteria: 'B.Tech/B.Sc with 6+ CGPA',
       last_date: '2026-04-08',
-      status: 'active',
+      status: 'open',
       created_at: '2026-02-03',
       updated_at: '2026-02-26',
     },
@@ -395,7 +418,7 @@ export class Dashbaord implements OnInit {
       required_skills: ['JavaScript', 'Go', 'APIs'],
       eligibility_criteria: 'B.Tech/M.Tech with 7+ CGPA',
       last_date: '2026-05-12',
-      status: 'active',
+      status: 'open',
       created_at: '2026-02-04',
       updated_at: '2026-02-25',
     },
@@ -425,7 +448,7 @@ export class Dashbaord implements OnInit {
       required_skills: ['Python', 'JavaScript', 'Trading'],
       eligibility_criteria: 'B.Tech/M.Tech with 7+ CGPA',
       last_date: '2026-06-02',
-      status: 'active',
+      status: 'open',
       created_at: '2026-02-06',
       updated_at: '2026-02-23',
     },
@@ -440,7 +463,7 @@ export class Dashbaord implements OnInit {
       required_skills: ['Java', 'Spring', 'Hibernate'],
       eligibility_criteria: 'B.Tech/B.Sc with 6+ CGPA',
       last_date: '2026-04-24',
-      status: 'active',
+      status: 'open',
       created_at: '2026-02-07',
       updated_at: '2026-02-22',
     },
@@ -455,7 +478,7 @@ export class Dashbaord implements OnInit {
       required_skills: ['Ruby', 'JavaScript', 'React'],
       eligibility_criteria: 'B.Tech/M.Tech with 7+ CGPA',
       last_date: '2026-05-26',
-      status: 'active',
+      status: 'open',
       created_at: '2026-02-08',
       updated_at: '2026-02-21',
     },
@@ -501,5 +524,9 @@ export class Dashbaord implements OnInit {
 
   goToNextPage(): void {
     this.goToPage(this.currentPage + 1);
+  }
+
+  viewPost(placementId: string): void {
+    this.router.navigate(['/view-post', placementId]);
   }
 }

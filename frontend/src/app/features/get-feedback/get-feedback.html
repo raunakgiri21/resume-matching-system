@@ -1,0 +1,93 @@
+<div class="get-feedback-container">
+  <!-- Header -->
+  <div class="feedback-header">
+    <div class="header-top">
+      <button class="btn-back" (click)="goBack()">← Back</button>
+      <h1>Placement Feedback</h1>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div class="loading-state" *ngIf="isLoading">
+    <div class="spinner"></div>
+    <p>Loading feedback...</p>
+  </div>
+
+  <!-- Content -->
+  <div class="feedback-content" *ngIf="!isLoading">
+    <!-- Empty State -->
+    <div *ngIf="!feedback" class="no-feedback">
+      <p>No feedback available yet.</p>
+      <button class="btn btn-primary" (click)="goBack()">Go Back</button>
+    </div>
+
+    <!-- Feedback Content -->
+    <div *ngIf="feedback" class="feedback-card">
+      <!-- Placement Info Section -->
+      <div class="feedback-section placement-info-section" *ngIf="placement">
+        <h2 class="placement-title">{{ placement?.role_title }}</h2>
+        <p class="placement-company">{{ placement?.company_name }}</p>
+      </div>
+
+      <!-- Score & Rank Section -->
+      <div class="feedback-section score-rank-section">
+        <div class="score-item">
+          <label class="item-label">Score</label>
+          <span
+            class="score-badge"
+            [class.high]="feedback?.score >= 80"
+            [class.medium]="feedback?.score >= 50 && feedback?.score < 80"
+            [class.low]="feedback?.score < 50"
+          >
+            {{ feedback?.score || 'N/A' }}%
+          </span>
+        </div>
+        <div class="rank-item">
+          <label class="item-label">Rank</label>
+          <span class="item-value">
+            {{ feedback?.rank || 'N/A' }}
+            <span *ngIf="feedback?.total_matched" class="rank-total">
+              / {{ feedback?.total_matched }}
+            </span>
+          </span>
+        </div>
+      </div>
+
+      <!-- Matching Skills Section -->
+      <div class="feedback-section" *ngIf="feedback?.matching_skills">
+        <h3 class="section-title">Matching Skills</h3>
+        <p class="section-content">{{ feedback?.matching_skills }}</p>
+      </div>
+
+      <!-- Missing Skills Section -->
+      <div class="feedback-section" *ngIf="feedback?.missing_skills">
+        <h3 class="section-title">Missing Skills</h3>
+        <p class="section-content">{{ feedback?.missing_skills }}</p>
+      </div>
+
+      <!-- Strengths Section -->
+      <div class="feedback-section" *ngIf="feedback?.strengths">
+        <h3 class="section-title">Strengths</h3>
+        <p class="section-content">{{ feedback?.strengths }}</p>
+      </div>
+
+      <!-- Feedback Section -->
+      <div class="feedback-section" *ngIf="feedback?.feedback">
+        <h3 class="section-title">Feedback</h3>
+        <p class="section-content">{{ feedback?.feedback }}</p>
+      </div>
+
+      <!-- Processed At Section -->
+      <div class="feedback-section" *ngIf="feedback?.processed_at">
+        <label class="item-label">Processed At</label>
+        <span class="item-value">{{ feedback?.processed_at | date: 'medium' }}</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Error State -->
+  <div class="error-state" *ngIf="!isLoading && !feedback">
+    <p>Failed to load feedback. Please try again.</p>
+    <button class="btn btn-primary" (click)="goBack()">Go Back</button>
+  </div>
+</div>

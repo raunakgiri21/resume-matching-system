@@ -5,7 +5,11 @@
         <h2 class="post-features__title">Job Posts</h2>
         <span class="post-features__count">{{ placements.length }} total</span>
       </div>
-      <button class="post-features__create" *ngIf="isAdmin">
+      <button
+        class="post-features__create"
+        *ngIf="isAdmin"
+        (click)="router.navigate(['/create-post'])"
+      >
         <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
           <path
             d="M7 1v12M1 7h12"
@@ -30,7 +34,11 @@
           </tr>
         </thead>
         <tbody>
-          <tr class="table__row" *ngFor="let placement of paginatedPlacements; let i = index">
+          <tr
+            class="table__row"
+            *ngFor="let placement of paginatedPlacements; let i = index"
+            (click)="viewPost(placement.id)"
+          >
             <td class="table__sl">{{ (currentPage - 1) * itemsPerPage + i + 1 }}</td>
             <td class="table__company">{{ placement.company_name }}</td>
             <td>{{ placement.role_title }}</td>
@@ -39,7 +47,7 @@
               <span
                 class="badge"
                 [ngClass]="{
-                  'badge--active': placement.status === 'active',
+                  'badge--active': placement.status === 'open',
                   'badge--closed': placement.status === 'closed',
                   'badge--draft': placement.status === 'on-hold',
                 }"

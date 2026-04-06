@@ -1,0 +1,162 @@
+<div class="create-post-container">
+  <div class="create-post-header">
+    <h1>Create Job Post</h1>
+    <p>Add a new job posting for students</p>
+  </div>
+
+  <form [formGroup]="createPostForm" (ngSubmit)="onSubmit()" class="create-post-form">
+    <!-- Company Name -->
+    <div class="form-group">
+      <label for="company_name" class="form-label"
+        >Company Name <span class="required">*</span></label
+      >
+      <input
+        type="text"
+        id="company_name"
+        formControlName="company_name"
+        class="form-input"
+        [class.is-invalid]="isFieldInvalid('company_name')"
+        placeholder="Enter company name"
+        [disabled]="isLoading"
+      />
+      <div class="error-message" *ngIf="isFieldInvalid('company_name')">
+        {{ getFieldError('company_name') }}
+      </div>
+    </div>
+
+    <!-- Role Title -->
+    <div class="form-group">
+      <label for="role_title" class="form-label">Role Title <span class="required">*</span></label>
+      <input
+        type="text"
+        id="role_title"
+        formControlName="role_title"
+        class="form-input"
+        [class.is-invalid]="isFieldInvalid('role_title')"
+        placeholder="e.g., Software Engineer, Data Analyst"
+        [disabled]="isLoading"
+      />
+      <div class="error-message" *ngIf="isFieldInvalid('role_title')">
+        {{ getFieldError('role_title') }}
+      </div>
+    </div>
+
+    <!-- Job Description -->
+    <div class="form-group">
+      <label for="job_description" class="form-label"
+        >Job Description <span class="required">*</span></label
+      >
+      <textarea
+        id="job_description"
+        formControlName="job_description"
+        class="form-textarea"
+        [class.is-invalid]="isFieldInvalid('job_description')"
+        placeholder="Enter detailed job description"
+        rows="5"
+        [disabled]="isLoading"
+      ></textarea>
+      <div class="error-message" *ngIf="isFieldInvalid('job_description')">
+        {{ getFieldError('job_description') }}
+      </div>
+    </div>
+
+    <!-- CTC (LPA) -->
+    <div class="form-group">
+      <label for="ctc_lpa" class="form-label">CTC (LPA) <span class="required">*</span></label>
+      <input
+        type="number"
+        id="ctc_lpa"
+        formControlName="ctc_lpa"
+        class="form-input"
+        [class.is-invalid]="isFieldInvalid('ctc_lpa')"
+        placeholder="Enter CTC in LPA"
+        step="0.01"
+        min="0"
+        [disabled]="isLoading"
+      />
+      <div class="error-message" *ngIf="isFieldInvalid('ctc_lpa')">
+        {{ getFieldError('ctc_lpa') }}
+      </div>
+    </div>
+
+    <!-- Location -->
+    <div class="form-group">
+      <label for="location" class="form-label">Location</label>
+      <input
+        type="text"
+        id="location"
+        formControlName="location"
+        class="form-input"
+        placeholder="e.g., Bangalore, Remote, Hybrid"
+        [disabled]="isLoading"
+      />
+    </div>
+
+    <!-- Required Skills -->
+    <div class="form-group">
+      <label for="required_skills" class="form-label">Required Skills <span class="required">*</span></label>
+      <textarea
+        id="required_skills"
+        formControlName="required_skills"
+        class="form-textarea"
+        [class.is-invalid]="isFieldInvalid('required_skills')"
+        placeholder="Enter required skills (e.g., JavaScript, React, Node.js)"
+        rows="3"
+        [disabled]="isLoading"
+      ></textarea>
+      <div class="error-message" *ngIf="isFieldInvalid('required_skills')">
+        {{ getFieldError('required_skills') }}
+      </div>
+    </div>
+
+    <!-- Eligibility Criteria -->
+    <div class="form-group">
+      <label for="eligibility_criteria" class="form-label">Eligibility Criteria</label>
+      <textarea
+        id="eligibility_criteria"
+        formControlName="eligibility_criteria"
+        class="form-textarea"
+        placeholder="Enter eligibility criteria (e.g., CGPA > 6.5, No backlogs)"
+        rows="3"
+        [disabled]="isLoading"
+      ></textarea>
+    </div>
+
+    <!-- Last Date -->
+    <div class="form-group">
+      <label for="last_date" class="form-label">Last Date to Apply <span class="required">*</span></label>
+      <input
+        type="date"
+        id="last_date"
+        formControlName="last_date"
+        class="form-input"
+        [class.is-invalid]="isFieldInvalid('last_date')"
+        [disabled]="isLoading"
+      />
+      <div class="error-message" *ngIf="isFieldInvalid('last_date')">
+        {{ getFieldError('last_date') }}
+      </div>
+
+    </div>
+
+    <!-- Submit Button -->
+    <div class="form-actions">
+      <button
+        type="submit"
+        class="btn btn-primary"
+        [disabled]="isLoading || createPostForm.invalid"
+      >
+        <span *ngIf="!isLoading">Create Post</span>
+        <span *ngIf="isLoading">Creating...</span>
+      </button>
+      <button
+        type="button"
+        class="btn btn-secondary"
+        (click)="router.navigate(['/dashboard'])"
+        [disabled]="isLoading"
+      >
+        Cancel
+      </button>
+    </div>
+  </form>
+</div>
