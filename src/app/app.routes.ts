@@ -27,6 +27,11 @@ export const routes: Routes = [
     loadComponent: () => import('./features/auth/register/register').then((m) => m.Register),
   },
   {
+    path: 'create-post',
+    canActivate: [accessGuard('admin')],
+    loadComponent: () => import('./features/create-post/create-post').then((m) => m.CreatePost),
+  },
+  {
     path: 'dashboard',
     canActivate: [accessGuard()],
     loadComponent: () => import('./features/dashbaord/dashbaord').then((m) => m.Dashbaord),
