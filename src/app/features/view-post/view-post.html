@@ -77,6 +77,17 @@
         {{ isSubmitting ? 'Registering...' : 'Register for Position' }}
       </button>
 
+      <!-- Get Feedback Link for Students -->
+      <a class="edit-link" *ngIf="isStudent()" (click)="getFeedback()">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" class="edit-link-icon">
+          <path
+            d="M8 1C4.1 1 1 4.1 1 8s3.1 7 7 7 7-3.1 7-7-3.1-7-7-7zm0 12c-2.8 0-5-2.2-5-5s2.2-5 5-5 5 2.2 5 5-2.2 5-5 5zm.5-8H7v3h1.5V5zm0 4H7v1.5h1.5V9z"
+            fill="currentColor"
+          />
+        </svg>
+        Get Feedback
+      </a>
+
       <!-- Edit Link for Admin -->
       <a class="edit-link" *ngIf="shouldShowUpdate()" (click)="goToUpdatePost()">
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none" class="edit-link-icon">

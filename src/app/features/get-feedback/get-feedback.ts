@@ -8,21 +8,18 @@ import { Placements } from '../../core/services/placements/placements';
 
 // ─── Component ────────────────────────────────────────────────────────────────────
 @Component({
-  selector: 'app-view-results',
+  selector: 'app-get-feedback',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './view-results.html',
-  styleUrls: ['./view-results.scss'],
+  templateUrl: './get-feedback.html',
+  styleUrls: ['./get-feedback.scss'],
 })
-export class ViewResults implements OnInit, OnDestroy {
+export class GetFeedback implements OnInit, OnDestroy {
   // ── State ────────────────────────────────────────────────────────────────
-  postId: string | null = null;
-  postTitle: string = '';
-  results: any[] = [];
+  placementId: string | null = null;
+  feedback: any = null;
+  placement: any = null;
   isLoading = true;
-  currentPage = 1;
-  itemsPerPage = 10;
-  expandedRows = new Set<number>();
 
   constructor(
     private route: ActivatedRoute,
@@ -34,7 +31,7 @@ export class ViewResults implements OnInit, OnDestroy {
 
   // ── Lifecycle ─────────────────────────────────────────────────────────────
   ngOnInit(): void {
-    this.loadResults();
+    this.loadFeedback();
   }
 
   ngOnDestroy(): void {
@@ -42,13 +39,12 @@ export class ViewResults implements OnInit, OnDestroy {
   }
 
   // ── Data Loading ──────────────────────────────────────────────────────────
-  private loadResults(): void {
-    this.route.queryParams.subscribe(async (params) => {
-      this.postId = params['id'];
-      this.postTitle = params['title'] || 'Position';
+  private loadFeedback(): void {
+    this.route.params.subscribe(async (params) => {
+      this.placementId = params['id'];
 
-      if (!this.postId) {
-        this.toastService.error('Error', 'Post ID not found');
+      if (!this.placementId) {
+        this.toastService.error('Error', 'Placement ID not found');
         this.goBack();
         return;
       }
@@ -56,56 +52,21 @@ export class ViewResults implements OnInit, OnDestroy {
       try {
         this.isLoading = true;
         this.loadingService.show();
-        const response: any = await firstValueFrom(
-          this.placements.getResumeMatchResults(this.postId),
-        );
-        this.results = response || [];
+        // Fetch both placement details and feedback in parallel
+        const [placement, feedback] = await Promise.all([
+          firstValueFrom(this.placements.getPlacementById(this.placementId)),
+          firstValueFrom(this.placements.getMyResumeMatchResult(this.placementId)),
+        ]);
+        this.placement = placement;
+        this.feedback = feedback;
       } catch (error: any) {
-        this.toastService.error('Error', error?.error?.message || 'Failed to load results');
+        this.toastService.error('Error', error?.error?.message || 'Failed to load feedback');
         this.goBack();
       } finally {
         this.isLoading = false;
         this.loadingService.hide();
       }
     });
-  }
-
-  // ── Pagination ───────────────────────────────────────────────────────────
-  get totalPages(): number {
-    return Math.ceil(this.results.length / this.itemsPerPage);
-  }
-
-  get paginatedResults(): any[] {
-    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-    const endIndex = startIndex + this.itemsPerPage;
-    return this.results.slice(startIndex, endIndex);
-  }
-
-  goToPage(page: number): void {
-    if (page >= 1 && page <= this.totalPages) {
-      this.currentPage = page;
-    }
-  }
-
-  goToPreviousPage(): void {
-    this.goToPage(this.currentPage - 1);
-  }
-
-  goToNextPage(): void {
-    this.goToPage(this.currentPage + 1);
-  }
-
-  // ── Summary Expansion ────────────────────────────────────────────────────
-  toggleSummary(resultIndex: number): void {
-    if (this.expandedRows.has(resultIndex)) {
-      this.expandedRows.delete(resultIndex);
-    } else {
-      this.expandedRows.add(resultIndex);
-    }
-  }
-
-  isSummaryExpanded(resultIndex: number): boolean {
-    return this.expandedRows.has(resultIndex);
   }
 
   // ── Navigation ───────────────────────────────────────────────────────────

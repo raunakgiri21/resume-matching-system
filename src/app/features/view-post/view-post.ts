@@ -90,7 +90,6 @@ export class ViewPost implements OnInit, OnDestroy {
         response?.message || 'Resume match generated successfully!',
       );
       // Optionally navigate to a results page or display the match details
-
     } catch (error: any) {
       this.toastService.error('Error', error?.error?.message || 'Failed to generate resume match');
     } finally {
@@ -145,6 +144,12 @@ export class ViewPost implements OnInit, OnDestroy {
           title: this.post.role_title,
         },
       });
+    }
+  }
+
+  getFeedback(): void {
+    if (this.post?.id) {
+      this.router.navigate(['/get-feedback', this.post.id]);
     }
   }
 

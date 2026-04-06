@@ -68,6 +68,11 @@ export const routes: Routes = [
     loadComponent: () => import('./features/view-results/view-results').then((m) => m.ViewResults),
   },
   {
+    path: 'get-feedback/:id',
+    canActivate: [accessGuard('student')],
+    loadComponent: () => import('./features/get-feedback/get-feedback').then((m) => m.GetFeedback),
+  },
+  {
     path: '',
     redirectTo: 'login',
     pathMatch: 'full',
