@@ -27,6 +27,11 @@ export const routes: Routes = [
     loadComponent: () => import('./features/auth/register/register').then((m) => m.Register),
   },
   {
+    path: 'create-post',
+    canActivate: [accessGuard('admin')],
+    loadComponent: () => import('./features/create-post/create-post').then((m) => m.CreatePost),
+  },
+  {
     path: 'dashboard',
     canActivate: [accessGuard()],
     loadComponent: () => import('./features/dashbaord/dashbaord').then((m) => m.Dashbaord),
@@ -40,6 +45,32 @@ export const routes: Routes = [
     path: 'resume',
     canActivate: [accessGuard('student')],
     loadComponent: () => import('./features/resume/resume').then((m) => m.Resume),
+  },
+  {
+    path: 'view-post/:id',
+    canActivate: [accessGuard()],
+    loadComponent: () => import('./features/view-post/view-post').then((m) => m.ViewPost),
+  },
+  {
+    path: 'update-post/:id',
+    canActivate: [accessGuard('admin')],
+    loadComponent: () => import('./features/edit-post/edit-post').then((m) => m.EditPost),
+  },
+  {
+    path: 'view-registrations',
+    canActivate: [accessGuard('admin')],
+    loadComponent: () =>
+      import('./features/view-registrations/view-registrations').then((m) => m.ViewRegistrations),
+  },
+  {
+    path: 'view-results',
+    canActivate: [accessGuard('admin')],
+    loadComponent: () => import('./features/view-results/view-results').then((m) => m.ViewResults),
+  },
+  {
+    path: 'get-feedback/:id',
+    canActivate: [accessGuard('student')],
+    loadComponent: () => import('./features/get-feedback/get-feedback').then((m) => m.GetFeedback),
   },
   {
     path: '',

@@ -1,0 +1,127 @@
+<div class="view-results-container">
+  <!-- Header -->
+  <div class="results-header">
+    <div class="header-top">
+      <button class="btn-back" (click)="goBack()">← Back</button>
+      <h1>Results for {{ postTitle }}</h1>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div class="loading-state" *ngIf="isLoading">
+    <div class="spinner"></div>
+    <p>Loading results...</p>
+  </div>
+
+  <!-- Content -->
+  <div class="results-content" *ngIf="!isLoading">
+    <!-- Empty State -->
+    <div *ngIf="results.length === 0" class="no-results">
+      <p>No results yet for this position.</p>
+      <button class="btn btn-primary" (click)="goBack()">Go Back</button>
+    </div>
+
+    <!-- Results Table -->
+    <div *ngIf="results.length > 0" class="results-table">
+      <div class="table-header">
+        <div class="col-serial">S.No</div>
+        <div class="col-name">Student Name</div>
+        <div class="col-email">Email</div>
+        <div class="col-rank">Rank</div>
+        <div class="col-score">Score</div>
+        <div class="col-summary">Admin Summary</div>
+        <div class="col-registered">Processed At</div>
+      </div>
+
+      <div
+        class="table-row"
+        *ngFor="let result of paginatedResults; let i = index"
+        [class.expanded]="isSummaryExpanded(i)"
+      >
+        <div class="col-serial">{{ (currentPage - 1) * itemsPerPage + i + 1 }}</div>
+        <div class="col-name">{{ result.registrations?.users?.name || 'N/A' }}</div>
+        <div class="col-email">{{ result.registrations?.users?.email || 'N/A' }}</div>
+        <div class="col-rank">{{ result?.rank || 'N/A' }}</div>
+        <div class="col-score">
+          <span
+            class="score-badge"
+            [class.high]="result?.score >= 80"
+            [class.medium]="result?.score >= 50 && result?.score < 80"
+            [class.low]="result?.score < 50"
+          >
+            {{ result?.score || 'N/A' }}%
+          </span>
+        </div>
+        <div class="col-summary" *ngIf="result?.admin_summary && result?.admin_summary !== 'N/A'">
+          <div class="summary-container">
+            <button
+              class="summary-toggle"
+              (click)="toggleSummary(i)"
+              [attr.aria-expanded]="isSummaryExpanded(i)"
+            >
+              <svg class="toggle-icon" width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <path
+                  d="M6 5l4 4-4 4"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </button>
+            <div class="summary-text" [class.expanded]="isSummaryExpanded(i)">
+              {{ result?.admin_summary }}
+            </div>
+          </div>
+        </div>
+        <div class="col-summary" *ngIf="!result?.admin_summary || result?.admin_summary === 'N/A'">
+          N/A
+        </div>
+        <div class="col-registered">{{ result.processed_at | date }}</div>
+      </div>
+    </div>
+
+    <!-- Pagination -->
+    <div *ngIf="results.length > 0" class="pagination">
+      <span class="pagination__info"
+        >Page {{ currentPage }} of {{ totalPages }} ({{ results.length }} total)</span
+      >
+      <div class="pagination__controls">
+        <button class="pagination__btn" [disabled]="currentPage === 1" (click)="goToPreviousPage()">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <path
+              d="M9 11L5 7l4-4"
+              stroke="currentColor"
+              stroke-width="1.6"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </button>
+        <button
+          class="pagination__page"
+          *ngFor="let page of [1, 2, 3, 4, 5] | slice: 0 : totalPages"
+          [ngClass]="{ 'pagination__page--active': page === currentPage }"
+          (click)="goToPage(page)"
+        >
+          {{ page }}
+        </button>
+        <button
+          class="pagination__btn"
+          [disabled]="currentPage === totalPages"
+          (click)="goToNextPage()"
+        >
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <path
+              d="M5 3l4 4-4 4"
+              stroke="currentColor"
+              stroke-width="1.6"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
