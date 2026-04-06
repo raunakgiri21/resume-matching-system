@@ -80,7 +80,7 @@ export class MatchingService {
   async getStudentResult(placementId: string, studentId: string) {
     const { data: registration } = await this.supabase.db
       .from('registrations')
-      .select('id')
+      .select('id, placements(company_name, role_title)')
       .eq('placement_id', placementId)
       .eq('student_id', studentId)
       .single();
@@ -98,7 +98,18 @@ export class MatchingService {
       throw new NotFoundException(
         'Results not yet generated. Check back soon.',
       );
-    return data;
+
+    const { count } = await this.supabase.db
+      .from('match_results')
+      .select('id', { count: 'exact', head: true })
+      .eq('placement_id', placementId);
+
+    return {
+      ...data,
+      company_name: registration.placements?.[0]?.company_name,
+      role_title: registration.placements?.[0]?.role_title,
+      total_matched: count,
+    };
   }
 
   private async processRegistration(registration: any) {
