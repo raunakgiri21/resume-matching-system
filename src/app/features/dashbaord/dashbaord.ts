@@ -525,4 +525,8 @@ export class Dashbaord implements OnInit {
   goToNextPage(): void {
     this.goToPage(this.currentPage + 1);
   }
+
+  viewPost(placementId: string): void {
+    this.router.navigate(['/view-post', placementId]);
+  }
 }

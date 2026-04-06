@@ -1,0 +1,86 @@
+<div class="view-registrations-container">
+  <!-- Header -->
+  <div class="registrations-header">
+    <div class="header-top">
+      <button class="btn-back" (click)="goBack()">← Back</button>
+      <h1>Registrations for {{ postTitle }}</h1>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div class="loading-state" *ngIf="isLoading">
+    <div class="spinner"></div>
+    <p>Loading registrations...</p>
+  </div>
+
+  <!-- Content -->
+  <div class="registrations-content" *ngIf="!isLoading">
+    <!-- Empty State -->
+    <div *ngIf="registrations.length === 0" class="no-registrations">
+      <p>No registrations yet for this position.</p>
+      <button class="btn btn-primary" (click)="goBack()">Go Back</button>
+    </div>
+
+    <!-- Registrations Table -->
+    <div *ngIf="registrations.length > 0" class="registrations-table">
+      <div class="table-header">
+        <div class="col-serial">S.No</div>
+        <div class="col-name">Student Name</div>
+        <div class="col-email">Email</div>
+        <div class="col-status">Status</div>
+        <div class="col-registered">Registered At</div>
+      </div>
+
+      <div class="table-row" *ngFor="let registration of paginatedRegistrations; let i = index">
+        <div class="col-serial">{{ (currentPage - 1) * itemsPerPage + i + 1 }}</div>
+        <div class="col-name">{{ registration.users.name || 'N/A' }}</div>
+        <div class="col-email">{{ registration.users.email || 'N/A' }}</div>
+        <div class="col-status">{{ registration.status || 'Registered' | titlecase }}</div>
+        <div class="col-registered">{{ registration.registered_at | date }}</div>
+      </div>
+    </div>
+
+    <!-- Pagination -->
+    <div *ngIf="registrations.length > 0" class="pagination">
+      <span class="pagination__info"
+        >Page {{ currentPage }} of {{ totalPages }} ({{ registrations.length }} total)</span
+      >
+      <div class="pagination__controls">
+        <button class="pagination__btn" [disabled]="currentPage === 1" (click)="goToPreviousPage()">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <path
+              d="M9 11L5 7l4-4"
+              stroke="currentColor"
+              stroke-width="1.6"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </button>
+        <button
+          class="pagination__page"
+          *ngFor="let page of [1, 2, 3, 4, 5] | slice: 0 : totalPages"
+          [ngClass]="{ 'pagination__page--active': page === currentPage }"
+          (click)="goToPage(page)"
+        >
+          {{ page }}
+        </button>
+        <button
+          class="pagination__btn"
+          [disabled]="currentPage === totalPages"
+          (click)="goToNextPage()"
+        >
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <path
+              d="M5 3l4 4-4 4"
+              stroke="currentColor"
+              stroke-width="1.6"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

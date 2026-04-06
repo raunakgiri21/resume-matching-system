@@ -29,6 +29,31 @@ export class Placements {
   deletePlacement(id: string) {
     return this.http.delete(`${this.API}/placements/${id}`);
   }
+
+  registerForPosition(id: string) {
+    return this.http.post(`${this.API}/placements/${id}/register`, {});
+  }
+
+  getRegistrations(id: string) {
+    return this.http.get(`${this.API}/placements/${id}/registrations`);
+  }
+
+  getRegistrationResult(registrationId: string) {
+    return this.http.get(`${this.API}/registrations/${registrationId}/result`);
+  }
+
+  // Matching API
+  generateResumeMatchAll(id: string) {
+    return this.http.post(`${this.API}/matching/placements/${id}/run`, {});
+  }
+
+  getResumeMatchResults(id: string) {
+    return this.http.get(`${this.API}/matching/placements/${id}/results`);
+  }
+
+  getMyResumeMatchResult(id: string) {
+    return this.http.get(`${this.API}/matching/placements/${id}/my-result`);
+  }
 }
 
 export interface CreatePlacementRequest {

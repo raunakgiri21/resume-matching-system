@@ -47,6 +47,27 @@ export const routes: Routes = [
     loadComponent: () => import('./features/resume/resume').then((m) => m.Resume),
   },
   {
+    path: 'view-post/:id',
+    canActivate: [accessGuard()],
+    loadComponent: () => import('./features/view-post/view-post').then((m) => m.ViewPost),
+  },
+  {
+    path: 'update-post/:id',
+    canActivate: [accessGuard('admin')],
+    loadComponent: () => import('./features/edit-post/edit-post').then((m) => m.EditPost),
+  },
+  {
+    path: 'view-registrations',
+    canActivate: [accessGuard('admin')],
+    loadComponent: () =>
+      import('./features/view-registrations/view-registrations').then((m) => m.ViewRegistrations),
+  },
+  {
+    path: 'view-results',
+    canActivate: [accessGuard('admin')],
+    loadComponent: () => import('./features/view-results/view-results').then((m) => m.ViewResults),
+  },
+  {
     path: '',
     redirectTo: 'login',
     pathMatch: 'full',

@@ -1,0 +1,131 @@
+<div class="view-post-container">
+  <!-- Post Content -->
+  <div class="post-content" *ngIf="!isLoading && post">
+    <!-- Header -->
+    <div class="post-header">
+      <div class="header-top">
+        <button class="btn-back" (click)="goBack()" [disabled]="isSubmitting">← Back</button>
+        <div class="status-badge" [class.open]="isPostOpen()" [class.closed]="!isPostOpen()">
+          {{ post.status | uppercase }}
+        </div>
+      </div>
+
+      <h1 class="post-title">{{ post.role_title }}</h1>
+      <p class="company-name">{{ post.company_name }}</p>
+    </div>
+
+    <!-- Details Grid -->
+    <div class="details-grid">
+      <!-- CTC -->
+      <div class="detail-card">
+        <span class="detail-label">CTC (LPA)</span>
+        <span class="detail-value">{{ post.ctc_lpa }}</span>
+      </div>
+
+      <!-- Location -->
+      <div class="detail-card">
+        <span class="detail-label">Location</span>
+        <span class="detail-value">{{ post.location || 'N/A' }}</span>
+      </div>
+
+      <!-- Last Date -->
+      <div class="detail-card">
+        <span class="detail-label">Last Date</span>
+        <span class="detail-value">{{
+          post.last_date ? (post.last_date | date: 'MMM dd, yyyy') : 'N/A'
+        }}</span>
+      </div>
+    </div>
+
+    <!-- Job Description -->
+    <div class="section">
+      <h2 class="section-title">Job Description</h2>
+      <p class="section-content" [innerText]="post.job_description"></p>
+    </div>
+
+    <!-- Required Skills -->
+    <div class="section" *ngIf="post.required_skills">
+      <h2 class="section-title">Required Skills</h2>
+      <p class="section-content" [innerText]="post.required_skills"></p>
+    </div>
+
+    <!-- Eligibility Criteria -->
+    <div class="section" *ngIf="post.eligibility_criteria">
+      <h2 class="section-title">Eligibility Criteria</h2>
+      <p class="section-content" [innerText]="post.eligibility_criteria"></p>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="action-buttons">
+      <!-- Generate Resume Match Button for Admin -->
+      <button
+        class="btn btn-secondary"
+        *ngIf="shouldShowUpdate() && isPostOpen()"
+        (click)="generateResumeMatch()"
+        [disabled]="isSubmitting"
+      >
+        {{ isSubmitting ? 'Generating...' : 'Generate Resume Match' }}
+      </button>
+
+      <!-- Register Button for Students -->
+      <button
+        class="btn btn-primary"
+        *ngIf="shouldShowRegister()"
+        (click)="registerForPost()"
+        [disabled]="isSubmitting"
+      >
+        {{ isSubmitting ? 'Registering...' : 'Register for Position' }}
+      </button>
+
+      <!-- Edit Link for Admin -->
+      <a class="edit-link" *ngIf="shouldShowUpdate()" (click)="goToUpdatePost()">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" class="edit-link-icon">
+          <path
+            d="M11.3 2.3L13.7 4.7M2 14h3l8-8-3-3-8 8v3z"
+            stroke="currentColor"
+            stroke-width="1.2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            fill="none"
+          />
+        </svg>
+        Edit Post
+      </a>
+
+      <!-- View Registrations Link for Admin -->
+      <a class="edit-link" *ngIf="shouldShowUpdate()" (click)="viewRegistrations()">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" class="edit-link-icon">
+          <path
+            d="M2 3h12M2 7h12M2 11h12M2 15h12"
+            stroke="currentColor"
+            stroke-width="1.2"
+            stroke-linecap="round"
+          />
+        </svg>
+        View Registrations
+      </a>
+
+      <!-- View Results Link for Admin -->
+      <a class="edit-link" *ngIf="shouldShowUpdate()" (click)="viewResults()">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" class="edit-link-icon">
+          <path
+            d="M3 14h10V6H3v8zm1-7h2v2H4v-2zm3 0h2v2H7v-2zm3 0h2v2h-2v-2zM4 11h2v2H4v-2zm3 0h2v2H7v-2zm3 0h2v2h-2v-2zM13 4H3V2h10v2z"
+            fill="currentColor"
+          />
+        </svg>
+        View Results
+      </a>
+
+      <!-- Message for Closed Posts -->
+      <div class="closed-message" *ngIf="!isPostOpen()">
+        <p>This position is currently closed and no longer accepting applications.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Error State -->
+  <div class="error-state" *ngIf="!isLoading && !post">
+    <p>Failed to load the post. Please try again.</p>
+    <button class="btn btn-primary" (click)="goBack()">Go Back</button>
+  </div>
+</div>
